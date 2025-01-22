@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.1 intro 2</title>
+</head>
+<body>
+    <h1 id="header">Hei på deg</h1>
+    <div id="buttons">    
+        <button onclick="changeHeader()">Change Header</button>
+        <button onclick="changeButtons()">Change Buttons</button>
+        <button onclick="ChangeEverything()">Change everything!</button>
+    </div>
+    <script>
+        // Grunnferdighet 1 - endre på HTML i en tagg frta JavaScript
+        // Grunnferdighet 2 - pakke inn en eller flere kommandoer inn i en funksjon
+        // Grunnferdighet 3 - koble en knappp til en funksjon
+
+        // document.getElementById("header").innerHTML = 'Hei';
+        // changeHeader();
+
+
+        function changeHeader() {
+        document.getElementById("header").innerHTML = 'Hei';
+        }
+
+        function changeButtons() {
+        document.getElementById("buttons").innerHTML = 'Buttons changed';
+        }
+
+        function ChangeEverything() {
+            changeHeader();
+            changeButtons();
+        }
+    </script>
+</body>
+</html>

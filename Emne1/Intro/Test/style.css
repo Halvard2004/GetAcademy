@@ -1,0 +1,29 @@
+div.page {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 20px 10fr 20px;
+    grid-template-areas: 'header header'
+                         'menu maincontent'
+                         'footer footer';
+}
+
+div.header {
+    background-color: lightgray;
+    grid-area: header;
+}
+
+div.menu {
+    background-color: lightblue;
+    grid-area: menu;
+}
+
+div.maincontent {
+    background-color: lightgreen;
+    grid-area: maincontent;
+}
+
+div.footer {
+    background-color: lightyellow;
+    grid-area: footer;
+}

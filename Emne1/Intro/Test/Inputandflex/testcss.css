@@ -1,0 +1,47 @@
+div {
+    display: flex;
+}
+div.Flex-column {
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+div.Flex-reverse-column {
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+}
+
+div.Flex-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+div.Flex-reverse-row {
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+}
+
+div.Flex-wrap {
+    flex-direction: row-reverse;
+    width: 400px;
+    flex-wrap: wrap;
+}
+
+div.Flex-Content {
+    flex-direction: row-reverse;
+    width: 400px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+div.Flex-align {
+    flex-direction: row-reverse;
+    width: 400px;
+    flex-wrap: wrap;
+    align-items: start;
+}
+
+
+body {
+    background-color: gray;
+}
