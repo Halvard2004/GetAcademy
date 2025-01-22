@@ -10,7 +10,7 @@ body {
 }
 
 .innerCard {
-    padding: 10px;
+    padding: 0px;
 }
 
 .header {
@@ -41,7 +41,10 @@ body {
 .dark {
     background-color: #36393f;
 }
-
+.bodyPart{
+    display: flex;
+    
+}
 p {
     padding-left: 10px;
 }
