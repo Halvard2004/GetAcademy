@@ -48,3 +48,9 @@ body {
 p {
     padding-left: 10px;
 }
+
+.grid {
+    width: 10px;
+    display: grid;
+    grid-template-columns: auto auto;
+}

@@ -180,17 +180,32 @@ function Legsp(){
 }
 
 function IngenLayout(){
-    document.getElementById("AllCards").style = "";
+    RemoveGrid()
+    RemoveStyle()
 }
 
 function VertikalLayout(){
-    document.getElementById("AllCards").style.flexdirection = column;
+    RemoveGrid()
+    RemoveStyle()
+    document.getElementById("AllCards").style.display = 'flex';
+    document.getElementById("AllCards").style.flexDirection = 'column';
 }
 
 function HorisontalLayout(){
-    document.getElementById("AllCards").style = "flex; flex-direction: column-reverse";
+    RemoveGrid()
+    RemoveStyle()
+    document.getElementById("AllCards").style.display = "flex";
 }
 
 function GridLayout(){
-    document.getElementById("AllCards").style = "flex; flex-direction: column-reverse";
+    RemoveStyle()
+    document.getElementById("AllCards").classList.add("grid");
+}
+
+function RemoveGrid(){
+    document.getElementById("AllCards").classList = [];
+}
+
+function RemoveStyle(){
+    document.getElementById("AllCards").style = "";
 }
