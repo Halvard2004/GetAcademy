@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="App"></div>
+    <script>
+        Create()
+        function Create(){
+            document.getElementById("App").innerHTML = /*HTML*/`
+            <input id="1"> 
+            <input id="2">
+            <input id="3">
+            <input id="4">
+            <button onclick="AddTr()"></button>
+            <table id="table">
+                <tr>
+                    <th>Dag</th>
+                    <th>Time</th>
+                    <th>Minutt</th>
+                    <th>Temperatur</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>10</td>
+                    <td>0</td>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>10</td>
+                    <td>15</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>10</td>
+                    <td>30</td>
+                    <td>7</td>
+                </tr>
+            </table>`;
+        }
+        
+        function AddTr(){
+                <tr>
+                    <td>${1}</td>
+                    <td>${2}</td>
+                    <td>${3}</td>
+                    <td>${4}</td>
+                </tr>
+        }
+    </script>
+</body>
+</html>
