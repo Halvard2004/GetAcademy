@@ -1,6 +1,6 @@
 let Selected;
 const size = 64;
-
+let Amounts = false;
 showBoardBegining();
 
 function showBoardBegining() {
@@ -37,12 +37,28 @@ function showBoard(Selected, lengthPart1, lengthPart3 ) {
 }
 
 function AmountDivs() {
-    Selected = document.getElementById("Amount").value - 1
+    let InputDecision = document.getElementById("InputDecision").value;
+    while (!Amounts){
+    if (InputDecision > 64){
+        InputDecision -= 64;
+    } else if (InputDecision < 1){
+        InputDecision += 64;
+    } else {
+        Amounts = true;
+    }
+}
+    Selected = InputDecision;
+    
     Parts();
     showBoard(Selected, Sizepart1, Sizepart2);
 }
 
 function Parts() {
+    if (Selected > 64){
+        Selected -= 64;
+    } else if (Selected < 1){
+        Selected += 64;
+    }
     Sizepart1 = Selected - 1;
     Sizepart2 = size - Selected;
     return(Sizepart1, Sizepart2)
