@@ -71,6 +71,18 @@ function positionChange(){
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 document.getElementById('exerciseText').innerHTML = /*HTML*/`            
         <h2>Oppgaver</h2>
         <ol>

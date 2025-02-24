@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advanced Platformer Game</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    canvas {
+      background: #87ceeb; /* Sky blue */
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="1600" height="600"></canvas>
+  <script>
+    // Get canvas and context
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Define world dimensions (larger than the canvas)
+    const worldWidth = 2000;
+    const worldHeight = 1200;
+
+    // Camera object to track the view
+    const camera = {
+      x: 0,
+      y: 0,
+      width: canvas.width,
+      height: canvas.height
+    };
+
+    // Track keyboard input
+    const keys = {};
+    window.addEventListener("keydown", (e) => { keys[e.key] = true; });
+    window.addEventListener("keyup", (e) => { keys[e.key] = false; });
+
+    // Physics constants
+    const gravity = 0.8;
+    const friction = 0.9;
+    const maxSpeed = 10;
+
+    // Simple Axis-Aligned Bounding Box (AABB) collision detection
+    function checkCollision(a, b) {
+      return (
+        a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y
+      );
+    }
+
+    // Player class with advanced collision resolution (axis by axis)
+    class Player {
+      constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.velX = 0;
+        this.velY = 0;
+        this.speed = 1.5;
+        this.jumping = false;
+      }
+      
+      update(platforms) {
+        // Horizontal input
+        if (keys["ArrowRight"] || keys["d"]) {
+          if (this.velX < maxSpeed) {
+            this.velX += this.speed;
+          }
+        }
+        if (keys["ArrowLeft"] || keys["a"]) {
+          if (this.velX > -maxSpeed) {
+            this.velX -= this.speed;
+          }
+        }
+        // Jumping
+        if ((keys["ArrowUp"] || keys["w"] || keys[" "]) && !this.jumping) {
+          this.jumping = true;
+          this.velY = -15;
+        }
+
+        // Apply friction and gravity
+        this.velX *= friction;
+        this.velY += gravity;
+        
+        // Calculate tentative positions
+        let newX = this.x + this.velX;
+        let newY = this.y + this.velY;
+        
+        // Create temporary bounding boxes for axis collisions
+        const futureX = { x: newX, y: this.y, width: this.width, height: this.height };
+        const futureY = { x: this.x, y: newY, width: this.width, height: this.height };
+
+        // Horizontal collision resolution
+        for (let plat of platforms) {
+          if (checkCollision(futureX, plat)) {
+            if (this.velX > 0) { // Moving right
+              newX = plat.x - this.width;
+            } else if (this.velX < 0) { // Moving left
+              newX = plat.x + plat.width;
+            }
+            this.velX = 0;
+          }
+        }
+        this.x = newX;
+        
+        // Vertical collision resolution
+        for (let plat of platforms) {
+          if (checkCollision(futureY, plat)) {
+            if (this.velY > 0) { // Falling down
+              newY = plat.y - this.height;
+              this.jumping = false;
+            } else if (this.velY < 0) { // Moving up
+              newY = plat.y + plat.height;
+            }
+            this.velY = 0;
+          }
+        }
+        this.y = newY;
+        
+        // Prevent going outside world boundaries
+        if (this.x < 0) { this.x = 0; this.velX = 0; }
+        if (this.x + this.width > worldWidth) { this.x = worldWidth - this.width; this.velX = 0; }
+        if (this.y < 0) { this.y = 0; this.velY = 0; }
+        if (this.y + this.height > worldHeight) { 
+          this.y = worldHeight - this.height; 
+          this.jumping = false; 
+          this.velY = 0; 
+        }
+      }
+      
+      draw() {
+        ctx.fillStyle = "#f00"; // red player
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    // Platform class to create level surfaces
+    class Platform {
+      constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+      }
+      
+      draw() {
+        ctx.fillStyle = "#654321"; // brown color for platforms
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    // Enemy class with simple patrol behavior
+    class Enemy {
+      constructor(x, y, width, height, patrolMin, patrolMax, speed) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.patrolMin = patrolMin;
+        this.patrolMax = patrolMax;
+        this.speed = speed;
+        this.direction = 1; // 1 means right; -1 means left
+      }
+      
+      update() {
+        this.x += this.speed * this.direction;
+        // Reverse direction when reaching patrol boundaries
+        if (this.x < this.patrolMin) {
+          this.x = this.patrolMin;
+          this.direction = 1;
+        }
+        if (this.x + this.width > this.patrolMax) {
+          this.x = this.patrolMax - this.width;
+          this.direction = -1;
+        }
+      }
+      
+      draw() {
+        ctx.fillStyle = "purple";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    // Create a player instance
+    const player = new Player(100, worldHeight - 100, 50, 50);
+
+    // Create an array of platforms (defining a level layout)
+    const platforms = [
+      new Platform(0, worldHeight - 40, worldWidth, 40), // Ground
+      new Platform(300, worldHeight - 150, 200, 20),
+      new Platform(700, worldHeight - 300, 200, 20),
+      new Platform(1200, worldHeight - 450, 300, 20),
+      new Platform(1700, worldHeight - 600, 200, 20),
+      new Platform(500, worldHeight - 550, 150, 20),
+      new Platform(900, worldHeight - 700, 150, 20)
+    ];
+
+    // Create enemies with defined patrol ranges
+    const enemies = [
+      new Enemy(320, worldHeight - 190, 40, 40, 300, 500, 1),
+      new Enemy(750, worldHeight - 340, 40, 40, 700, 900, 1.2)
+    ];
+
+    // Update the camera to follow the player
+    function updateCamera() {
+      camera.x = player.x + player.width / 2 - camera.width / 2;
+      camera.y = player.y + player.height / 2 - camera.height / 2;
+      // Clamp the camera to the world boundaries
+      if (camera.x < 0) camera.x = 0;
+      if (camera.y < 0) camera.y = 0;
+      if (camera.x + camera.width > worldWidth) camera.x = worldWidth - camera.width;
+      if (camera.y + camera.height > worldHeight) camera.y = worldHeight - camera.height;
+    }
+
+    // Main game loop
+    function gameLoop() {
+      // Update game objects
+      player.update(platforms);
+      enemies.forEach(enemy => enemy.update());
+      updateCamera();
+
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Save the context and translate based on camera position
+      ctx.save();
+      ctx.translate(-camera.x, -camera.y);
+
+      // Draw background (a simple sky)
+      ctx.fillStyle = "#87ceeb";
+      ctx.fillRect(0, 0, worldWidth, worldHeight);
+
+      // Draw platforms
+      platforms.forEach(platform => platform.draw());
+
+      // Draw enemies
+      enemies.forEach(enemy => enemy.draw());
+
+      // Draw the player
+      player.draw();
+
+      // Restore the context
+      ctx.restore();
+
+      // Continue the game loop
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game loop
+    gameLoop();
+  </script>
+</body>
+</html>
