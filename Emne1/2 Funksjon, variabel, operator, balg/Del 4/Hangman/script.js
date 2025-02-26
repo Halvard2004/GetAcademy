@@ -9,16 +9,16 @@ let Alive = true;
 
 function ShowApp(){
     if (Alive) {
-    document.body.innerHTML = /*HTML*/ `
-    ${Button}
-    ${OnlyALetter}
-    <div>Tries: ${Tries}</div>
-    <h1>${currentTex}</h1>
+        document.body.innerHTML = /*HTML*/ `
+            ${Button}
+            ${OnlyALetter}
+            <div>Tries: ${Tries}</div>
+            <h1>${currentTex}</h1>
     `} else {
-    document.body.innerHTML = /*HTML*/ `
-    ${Button}
-    <h1> The word is ${secretTex}</h1>
-    `
+        document.body.innerHTML = /*HTML*/ `
+        ${Button}
+        <h1> The word is ${secretTex}</h1>
+        `
     }
 }
 
@@ -27,7 +27,7 @@ function DecideSecretWord(){
     secretTex = document.getElementById("SecretWord").value.toLowerCase()
     currentTex = "";
     for (i = 0; i != secretTex.length; i++){
-    currentTex += "_"
+        currentTex += "_"
     }
     if (secretTex.indexOf(Spaces) != -1){
         currentTex = evaluateHangman(secretTex, currentTex, " ")
@@ -44,9 +44,9 @@ function evaluateHangman(secretText, currentText, guessedLetter){
         Tries = Tries - 1;
         return currentText;
     } else {
-    const currentTextBeforeGuessedLetter = currentText.substring(0, index);     
-    const currentTextAfterGuessedLetter = currentText.substring(index + 1);
-    const secretTextAfterGuessedLetter = secretText.substring(index + 1);
+        const currentTextBeforeGuessedLetter = currentText.substring(0, index);     
+        const currentTextAfterGuessedLetter = currentText.substring(index + 1);
+        const secretTextAfterGuessedLetter = secretText.substring(index + 1);
     return currentTextBeforeGuessedLetter + guessedLetter 
         + evaluateHangman(secretTextAfterGuessedLetter, currentTextAfterGuessedLetter, guessedLetter);
     }
@@ -59,7 +59,7 @@ function Guessletter(){
         OnlyALetter = `<h1>Du kan bare velge enn bokstave</h1>`
         ShowApp()
     } else {
-    currentTex = evaluateHangman(secretTex, currentTex, guessedLette)
+        currentTex = evaluateHangman(secretTex, currentTex, guessedLette)
     if (Tries <= 0) {
         Alive = false;
     } else {
