@@ -1,30 +1,17 @@
-div {
+
+#Box {
     border: solid 1px black;
-    width: 100px;
-    height: 100px;
+    height: 200px;
 }
 
-#Box0 {
-    grid-area: TopLeft;
-}
-
-#Box1 {
-    grid-area: TopRight;
-}
-
-#Box2 {
-    grid-area: BottomLeft;
-}
-
-#Box3 {
-    grid-area: BottomRight;
-}
 
 #container {
-    display: grid;
-    grid-template-columns: 50px, 50px;
-    grid-template-rows: 50px, 50px;
-    grid-template-areas: 
-                        "TopLeft TopRight"
-                        "BottomLeft BottomRight"
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+#buttonContainer {
+    text-align: center;
 }
